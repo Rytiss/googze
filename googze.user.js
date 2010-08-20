@@ -14,11 +14,13 @@ var wazeToGoogle = function() {
 		for (var i in nodes) {
 			var src = nodes[i].firstChild.src;
 			var matches = src.match(rE);
-			matches[2] = parseInt(matches[2], 16);
-			matches[3] = parseInt(matches[3], 16);
-			var rP = 'http://khm0.google.com/kh/v=67&x=' + matches[3] + '&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo'; // Replacement of the Reg Expression
-			nodes[i].firstChild.setAttribute("src", rP);
+			if (matches != null) {
+				matches[2] = parseInt(matches[2], 16);
+				matches[3] = parseInt(matches[3], 16);
+				var rP = 'http://khm0.google.com/kh/v=67&x=' + matches[3] + '&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo'; // Replacement of the Reg Expression
+				nodes[i].firstChild.setAttribute("src", rP);
+			}
 		}
-	} catch(err) {};
+	} catch(err) { console.log(err); };
 };
 wazeToGoogle();
