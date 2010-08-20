@@ -9,16 +9,16 @@
 var wazeToGoogle = function() {
 	try {
 		setTimeout(wazeToGoogle, 4000);
-		var rE = /http:\/\/(?:.*?)MapServer\/tile\/(\d+)\/(\d+)\/(\d+)\.png\?token=(?:.*?)/; // Reg Expression
-		var rP = 'http://khm0.google.com/kh/v=65&x=$3&y=$2&z=$1&s=Galileo'; // Replacement of the Reg Expression
-		
-		var nodes = document.getElementById("OpenLayers.Layer.TMS_8").childNodes;
+		var rE = /\/get_datadoors_tile\/(?:\d+)\/L(\d+)\/R(\w+)\/C(\w+)\.JPG/; // Reg Expression
+		var nodes = document.getElementById("OpenLayers.Layer.ArcGISCache_8").childNodes;
 		for (var i in nodes) {
 			var src = nodes[i].firstChild.src;
-			;
-			nodes[i].firstChild.setAttribute("src", src.replace(rE, rP));
+			var matches = src.match(rE);
+			matches[2] = parseInt(matches[2], 16);
+			matches[3] = parseInt(matches[3], 16);
+			var rP = 'http://khm0.google.com/kh/v=67&x=' + matches[3] + '&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo'; // Replacement of the Reg Expression
+			nodes[i].firstChild.setAttribute("src", rP);
 		}
 	} catch(err) {};
-}
-
+};
 wazeToGoogle();
