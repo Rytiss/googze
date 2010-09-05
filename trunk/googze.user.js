@@ -1,4 +1,4 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name         Googze
 // @namespace    http://code.google.com/p/googze
 // @description  Show aerial photos from Google Maps in Waze cartouche editor
@@ -9,7 +9,7 @@
 var wazeToGoogle = function() {
 	try {
 		setTimeout(wazeToGoogle, 4000);
-		var rE = /\/get_datadoors_tile\/(?:\d+)\/L(\d+)\/R(\w+)\/C(\w+)\.JPG/; // Reg Expression
+		var rE = /\/get_datadoors_tile\/(?:\d+)\/L(\d+)\/R(\w+)\/C(\w+)\.JPG/i; // Reg Expression
 		var nodes = document.getElementById("OpenLayers.Layer.ArcGISCache_8").childNodes;
 		for (var i in nodes) {
 			var src = nodes[i].firstChild.src;
