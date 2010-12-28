@@ -1,5 +1,7 @@
 <?php
 
+ini_set('memory_limit', '64M');
+
 chdir(dirname(__FILE__));
 
 $files = scandir('cache');
