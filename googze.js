@@ -1,7 +1,8 @@
 var Googze = {
 	enabled: true,
 	satellite: true,
-	streets: false
+	streets: false,
+	streets_type: 'google'
 };
 
 $('#googze').attr('style', 'background-color: #ccffcc; border: 1px solid #ffccff; padding-left: 20px; padding-top: 5px;');
@@ -20,6 +21,12 @@ $('#googze_satellite').live('click', function() {
 
 $('#googze_streets').live('click', function() {
 	Googze.streets = this.checked;
+	$.cookie('googze', serialize(Googze));
+	googzeRebuildUI();
+});
+
+$('#googze_streets_type').live('change', function() {
+	Googze.streets_type = this.value;
 	$.cookie('googze', serialize(Googze));
 	googzeRebuildUI();
 });
@@ -49,9 +56,13 @@ var wazeToGoogle = function() {
 						matches[2] = parseInt(matches[2], 16);
 						matches[3] = parseInt(matches[3], 16);
 						if ((Googze.satellite) && (Googze.streets)) {
-							var rP = 'http://googze.betterfly.lt/image.php?x=' + matches[3] + '&y=' + matches[2] + '&z=' + matches[1] + '&layers[]=satellite&layers[]=streets';
+							var rP = 'http://googze.betterfly.lt/image.php?x=' + matches[3] + '&y=' + matches[2] + '&z=' + matches[1] + '&layers[]=satellite&layers[]=streets&streets_type=' + Googze.streets_type;
 						} else if (Googze.streets) {
-							var rP = 'http://mt1.google.com/vt/lyrs=h@140&hl=en&x=' + matches[3] + '&s=&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
+							if (Googze.streets_type == 'osm') {
+								var rP = 'http://b.tile.openstreetmap.org/' + matches[1] + '/' + matches[3] + '/' + matches[2] + '.png';
+							} else {
+								var rP = 'http://mt1.google.com/vt/lyrs=h@140&hl=en&x=' + matches[3] + '&s=&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
+							}
 						} else {
 							var rP = 'http://khm0.google.com/kh/v=67&x=' + matches[3] + '&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
 						}
@@ -109,6 +120,15 @@ function googzeRebuildUI() {
 	html += '<input type="checkbox" id="googze_streets" style="width: 20px; margin-left: 20px; margin-top: 3px;"';
 	if (Googze.streets) { html += ' checked="checked"'; }
 	html += ' /><label for="googze_streets">Streets</label>';
+	
+	html += '<select id="googze_streets_type" style="width: 120px; margin-left: 5px;">';
+	html += '<option value="google">Google Maps</option>';
+	html += '<option value="osm"';
+	if (Googze.streets_type == 'osm') {
+		html += ' selected="selected"';
+	}
+	html += '>Open Street Map</option>';
+	html += '</select>';
 
 
 	$('#googze').html(html);
