@@ -64,7 +64,7 @@ var wazeToGoogle = function() {
 								var rP = 'http://mt1.google.com/vt/lyrs=h@140&hl=en&x=' + matches[3] + '&s=&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
 							}
 						} else {
-							var rP = 'http://khm0.google.com/kh/v=67&x=' + matches[3] + '&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
+							var rP = 'http://khm0.google.com/kh/v=76&x=' + matches[3] + '&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
 						}
 						nWorld[i].firstChild.setAttribute('src', rP);
 					}

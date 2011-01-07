@@ -27,7 +27,7 @@ if (!file_exists('cache/'.$filename)) {
 	$image = imagecreatetruecolor(256, 256);
 
 	if (in_array('satellite', $layers)) {
-		$image_satellite = imagecreatefromjpeg('http://khm0.google.com/kh/v=67&x='.$x.'&y='.$y.'&z='.$z.'&s=Galileo');
+		$image_satellite = imagecreatefromjpeg('http://khm0.google.com/kh/v=76&x='.$x.'&y='.$y.'&z='.$z.'&s=Galileo');
 		imagecopyresampled($image, $image_satellite, 0, 0, 0, 0, 256, 256, 256, 256);
 	}
 
