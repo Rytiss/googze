@@ -60,8 +60,10 @@ var wazeToGoogle = function() {
 						} else if (Googze.streets) {
 							if (Googze.streets_type == 'osm') {
 								var rP = 'http://b.tile.openstreetmap.org/' + matches[1] + '/' + matches[3] + '/' + matches[2] + '.png';
-							} else {
+							} else if (Googze.streets_type == 'google_landmarks') {
 								var rP = 'http://mt1.google.com/vt/lyrs=m@144&hl=en&x=' + matches[3] + '&s=&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
+							} else {
+								var rP = 'http://mt1.google.com/vt/lyrs=h@144&hl=en&x=' + matches[3] + '&s=&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
 							}
 						} else {
 							var rP = 'http://khm0.google.com/kh/v=76&x=' + matches[3] + '&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
@@ -121,8 +123,15 @@ function googzeRebuildUI() {
 	if (Googze.streets) { html += ' checked="checked"'; }
 	html += ' /><label for="googze_streets">Streets</label>';
 	
-	html += '<select id="googze_streets_type" style="width: 120px; margin-left: 5px;">';
-	html += '<option value="google">Google Maps</option>';
+	html += '<select id="googze_streets_type" style="width: 180px; margin-left: 5px;">';
+	html += '<option value="google">Google Maps (streets only)</option>';
+	if (!Googze.satellite) {
+		html += '<option value="google_landmarks"';
+		if (Googze.streets_type == 'google_landmarks') {
+		    html += ' selected="selected"';
+		}
+		html += '>Google Maps (with landmarks)</option>';
+	}
 	html += '<option value="osm"';
 	if (Googze.streets_type == 'osm') {
 		html += ' selected="selected"';
