@@ -41,35 +41,32 @@ var wazeToGoogle = function() {
 
 	try {
 		setTimeout(wazeToGoogle, 4000);
-		var rWorld = /\/get_datadoors_tile\/(?:\d+)\/L(\d+)\/R(\w+)\/C(\w+)\.JPG/i; // Reg Expression for World server
+		var rWorld = /\/tiles\/a(\d+)\.jpeg/i; // Reg Expression for World server (Bing maps)
 
-		var nWorld = document.getElementById('OpenLayers.Layer.ArcGISCache_6');
+		var nWorld = document.getElementById('Aerial');
 		if (nWorld != null) {
-			nWorld = nWorld.childNodes; // DOM nodes for World server
+			nWorld = nWorld.getElementsByTagName('img'); // DOM nodes for World server
 
 			// Replace World server
 			for (var i in nWorld) {
-				if (nWorld[i].firstChild) {
-					var src = nWorld[i].firstChild.src;
-					var matches = src.match(rWorld);
-					if (matches != null) {
-						matches[2] = parseInt(matches[2], 16);
-						matches[3] = parseInt(matches[3], 16);
-						if ((Googze.satellite) && (Googze.streets)) {
-							var rP = 'http://googze.betterfly.lt/image.php?x=' + matches[3] + '&y=' + matches[2] + '&z=' + matches[1] + '&layers[]=satellite&layers[]=streets&streets_type=' + Googze.streets_type;
-						} else if (Googze.streets) {
-							if (Googze.streets_type == 'osm') {
-								var rP = 'http://b.tile.openstreetmap.org/' + matches[1] + '/' + matches[3] + '/' + matches[2] + '.png';
-							} else if (Googze.streets_type == 'google_landmarks') {
-								var rP = 'http://mt1.google.com/vt/lyrs=m@144&hl=en&x=' + matches[3] + '&s=&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
-							} else {
-								var rP = 'http://mt1.google.com/vt/lyrs=h@144&hl=en&x=' + matches[3] + '&s=&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
-							}
+				if (nWorld[i].mm$tileId) {
+					var tilex = nWorld[i].mm$tileId.x;
+					var tiley = nWorld[i].mm$tileId.y;
+					var tilez = nWorld[i].mm$tileId.levelOfDetail - 8;
+					if ((Googze.satellite) && (Googze.streets)) {
+						var rP = 'http://googze.betterfly.lt/image.php?x=' + tilex + '&y=' + tiley + '&z=' + tilez + '&layers[]=satellite&layers[]=streets&streets_type=' + Googze.streets_type;
+					} else if (Googze.streets) {
+						if (Googze.streets_type == 'osm') {
+							var rP = 'http://b.tile.openstreetmap.org/' + tilez + '/' + tilex + '/' + tiley + '.png';
+						} else if (Googze.streets_type == 'google_landmarks') {
+							var rP = 'http://mt1.google.com/vt/lyrs=m@144&hl=en&x=' + tilex + '&s=&y=' + tiley + '&z=' + tilez + '&s=Galileo';
 						} else {
-							var rP = 'http://khm0.google.com/kh/v=76&x=' + matches[3] + '&y=' + matches[2] + '&z=' + matches[1] + '&s=Galileo';
+							var rP = 'http://mt1.google.com/vt/lyrs=h@144&hl=en&x=' + tilex + '&s=&y=' + tiley + '&z=' + tilez + '&s=Galileo';
 						}
-						nWorld[i].firstChild.setAttribute('src', rP);
+					} else {
+						var rP = 'http://khm0.google.com/kh/v=67&x=' + tilex + '&y=' + tiley + '&z=' + tilez+ '&s=Galileo';
 					}
+					nWorld[i].setAttribute('src', rP);
 				}
 			}
 		}
@@ -149,7 +146,6 @@ function googzeSetEnabled(enabled) {
 	googzeRebuildUI();
 	wazeToGoogle();
 }
-
 
 // Shamelessly stolen from http://blog.stchur.com/2007/04/06/serializing-objects-in-javascript/
 function serialize(_obj) {
