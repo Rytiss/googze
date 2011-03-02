@@ -43,7 +43,16 @@ var wazeToGoogle = function() {
 		setTimeout(wazeToGoogle, 4000);
 		var rWorld = /\/tiles\/a(\d+)\.jpeg/i; // Reg Expression for World server (Bing maps)
 
-		var nWorld = document.getElementById('Aerial');
+		var nWorld = document.getElementById('Aerial'); // English
+		if (nWorld == null) {
+			var nWorld = document.getElementById('Luftbild'); // German
+			if (nWorld == null) {
+				var nWorld = document.getElementById('Satellite'); // French
+				if (nWorld == null) {
+					var nWorld = document.getElementById('Aerea'); // Italian
+				}
+			}
+		}
 		if (nWorld != null) {
 			nWorld = nWorld.getElementsByTagName('img'); // DOM nodes for World server
 
@@ -64,7 +73,7 @@ var wazeToGoogle = function() {
 							var rP = 'http://mt1.google.com/vt/lyrs=h@144&hl=en&x=' + tilex + '&s=&y=' + tiley + '&z=' + tilez + '&s=Galileo';
 						}
 					} else {
-						var rP = 'http://khm0.google.com/kh/v=67&x=' + tilex + '&y=' + tiley + '&z=' + tilez+ '&s=Galileo';
+						var rP = 'http://khm0.google.com/kh/v=80&x=' + tilex + '&y=' + tiley + '&z=' + tilez+ '&s=Galileo';
 					}
 					nWorld[i].setAttribute('src', rP);
 				}
